@@ -17,16 +17,17 @@ export interface User {
   updatedAt: number; // timestamp
 }
 
+export const userDb: User[] = [];
+
 @Injectable()
 export class UserService {
-  userDb: User[] = [];
 
   getUsers() {
-    return this.userDb;
+    return userDb;
   }
 
   getUserById(id: string) {
-    const user = this.userDb.find((item) => item.id === id);
+    const user = userDb.find((item) => item.id === id);
 
     if (!user) {
       throw new NotFoundException('Not found');
@@ -45,14 +46,14 @@ export class UserService {
       updatedAt: date,
       ...createUserDto,
     };
-    this.userDb.push(newUser);
+    userDb.push(newUser);
     const result = { ...newUser };
     delete result.password;
     return result;
   }
 
   updateUserById(id: string, updatePasswordDto: UpdatePasswordDto) {
-    const user = this.userDb.find((item) => item.id === id);
+    const user = userDb.find((item) => item.id === id);
 
     if (!user) {
       throw new NotFoundException('Not found');
@@ -71,8 +72,8 @@ export class UserService {
       updatedAt: Number(Date.now()),
     };
 
-    const index = this.userDb.findIndex((item) => item.id === id);
-    this.userDb[index] = newUser;
+    const index = userDb.findIndex((item) => item.id === id);
+    userDb[index] = newUser;
 
     const returnUserNew = JSON.parse(JSON.stringify(newUser));
     delete returnUserNew.password;
@@ -81,14 +82,14 @@ export class UserService {
   }
 
   deleteUser(id: string) {
-    const user = this.userDb.find((item) => item.id === id);
+    const user = userDb.find((item) => item.id === id);
 
     if (!user) {
       throw new NotFoundException('Not found');
     } else {
-      const userIndex = this.userDb.findIndex((item) => item.id === id);
+      const userIndex = userDb.findIndex((item) => item.id === id);
       if (userIndex === -1) return null;
-      const deletedUser = this.userDb.splice(userIndex, 1);
+      const deletedUser = userDb.splice(userIndex, 1);
       return deletedUser;
     }
   }

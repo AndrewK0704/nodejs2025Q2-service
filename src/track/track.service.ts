@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { CreateTrackDto } from './create-track.dto';
 import { UpdateTrackDto } from './update-track.dto';
@@ -20,68 +16,58 @@ export const trackDb: Track[] = [];
 
 @Injectable()
 export class TrackService {
+  getTracks() {
+    return trackDb;
+  }
 
-      getTracks() {
-        return trackDb;
-      }
-    
-      getTrackById(id: string) {
-        const track = trackDb.find((item) => item.id === id);
-    
-        if (!track) {
-          throw new NotFoundException('Not found');
-        }
-    
-        return track;
-      }
-    
-      createTrack(createTrackDto: CreateTrackDto) {
-        const ui = uuidv4();
-        const newTrack = {
-          id: ui,
-          ...createTrackDto,
-        };
-        trackDb.push(newTrack);
-        const result = { ...newTrack };
-        return result;
-      }
-    
-      updateTrackById(id: string, updateTrackDto: UpdateTrackDto) {
-        const track = trackDb.find((item) => item.id === id);
-    
-        if (!track) {
-          throw new NotFoundException('Not found');
-        }
-    
-        const newTrack = {
-          ...track,
-          name: updateTrackDto.name,
-          artistId: updateTrackDto.artistId,
-          albumId: updateTrackDto.albumId,
-          duration: updateTrackDto.duration,
+  getTrackById(id: string) {
+    const track = trackDb.find((item) => item.id === id);
 
-        };
-    
-        const index = trackDb.findIndex((item) => item.id === id);
-        trackDb[index] = newTrack;
-    
-        const returnTrackNew = JSON.parse(JSON.stringify(newTrack));
-        delete returnTrackNew.password;
-    
-        return returnTrackNew;
-      }
-    
-      deleteTrack(id: string) {
-        const track = trackDb.find((item) => item.id === id);
-    
-        if (!track) {
-          throw new NotFoundException('Not found');
-        } else {
-          const trackIndex = trackDb.findIndex((item) => item.id === id);
-          if (trackIndex === -1) return null;
-          const deletedTrack = trackDb.splice(trackIndex, 1);
-          return deletedTrack;
-        }
+    if (!track) {
+      throw new NotFoundException('Not found');
     }
 
+    return track;
+  }
+
+  createTrack(createTrackDto: CreateTrackDto) {
+    const ui = uuidv4();
+    const newTrack = {
+      id: ui,
+      ...createTrackDto,
+    };
+    trackDb.push(newTrack);
+    const result = { ...newTrack };
+    return result;
+  }
+
+  updateTrackById(id: string, updateTrackDto: UpdateTrackDto) {
+    const track = trackDb.find((item) => item.id === id);
+
+    if (!track) {
+      throw new NotFoundException('Not found');
+    }
+
+    const newTrack = {
+      ...track,
+      ...updateTrackDto,
+    };
+
+    const index = trackDb.findIndex((item) => item.id === id);
+    trackDb[index] = newTrack;
+
+    return trackDb;
+  }
+
+  deleteTrack(id: string) {
+    const index = trackDb.findIndex((track) => track.id === id);
+
+    if (index === -1) {
+      throw new NotFoundException('Not found');
+    }
+
+    trackDb.splice(index, 1);
+
+    return 'Delete';
+  }
 }

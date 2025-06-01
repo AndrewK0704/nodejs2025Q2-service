@@ -3,13 +3,13 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class UpdateAlbumDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name?: string;
 
   @IsNumber()
   @IsNotEmpty()
-  year: number;
+  year?: number;
 
   @IsString()
   @IsNotEmpty()
-  artistId: string;
+  artistId?: string | null;
 }

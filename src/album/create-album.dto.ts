@@ -11,5 +11,5 @@ export class CreateAlbumDto {
 
   @IsString()
   @IsNotEmpty()
-  artistId: string;
+  artistId: string | null;
 }

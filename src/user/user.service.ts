@@ -21,7 +21,6 @@ export const userDb: User[] = [];
 
 @Injectable()
 export class UserService {
-
   getUsers() {
     return userDb;
   }

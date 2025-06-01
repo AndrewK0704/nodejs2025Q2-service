@@ -1,12 +1,9 @@
-import {
-  Injectable,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { CreateAlbumDto } from './create-album.dto';
 import { UpdateAlbumDto } from './update-album.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { trackDb } from '../track/track.service';
 
 export interface Album {
   id: string; // uuid v4
@@ -19,44 +16,43 @@ export const albumDb: Album[] = [];
 
 @Injectable()
 export class AlbumService {
+  getAlbums() {
+    return albumDb;
+  }
 
-    getAlbums() {
-        return albumDb;
-    }
-    
-    getAlbumById(id: string) {
+  getAlbumById(id: string) {
     const album = albumDb.find((item) => item.id === id);
 
     if (!album) {
-        throw new NotFoundException('Not found');
+      throw new NotFoundException('Not found');
     }
 
     return album;
-    }
+  }
 
-    createAlbum(createAlbumDto: CreateAlbumDto) {
-        const ui = uuidv4();
-        const newAlbum = {
-            id: ui,
-            ...createAlbumDto,
-        };
-        albumDb.push(newAlbum);
-        const result = { ...newAlbum };
-        return result;
-    }
+  createAlbum(createAlbumDto: CreateAlbumDto) {
+    const ui = uuidv4();
+    const newAlbum = {
+      id: ui,
+      ...createAlbumDto,
+    };
+    albumDb.push(newAlbum);
+    const result = { ...newAlbum };
+    return result;
+  }
 
-    updateAlbumById(id: string, updateAlbumDto: UpdateAlbumDto) {
+  updateAlbumById(id: string, updateAlbumDto: UpdateAlbumDto) {
     const album = albumDb.find((item) => item.id === id);
 
     if (!album) {
-        throw new NotFoundException('Not found');
+      throw new NotFoundException('Not found');
     }
 
     const newAlbum = {
-        ...album,
-        name: updateAlbumDto.name,
-        year: updateAlbumDto.year,
-        artistId: updateAlbumDto.artistId
+      ...album,
+      name: updateAlbumDto.name,
+      year: updateAlbumDto.year,
+      artistId: updateAlbumDto.artistId,
     };
 
     const index = albumDb.findIndex((item) => item.id === id);
@@ -66,18 +62,23 @@ export class AlbumService {
     delete returnAlbumNew.password;
 
     return returnAlbumNew;
+  }
+
+  deleteAlbum(id: string) {
+    const index = albumDb.findIndex((item) => item.id === id);
+
+    if (index === -1) {
+      throw new NotFoundException('Not found');
     }
 
-    deleteAlbum(id: string) {
-    const album = albumDb.find((item) => item.id === id);
+    trackDb.forEach((track) => {
+      if (track.albumId === id) {
+        track.albumId = null;
+      }
+    });
 
-    if (!album) {
-        throw new NotFoundException('Not found');
-    } else {
-        const albumIndex = albumDb.findIndex((item) => item.id === id);
-        if (albumIndex === -1) return null;
-        const deletedAlbum = albumDb.splice(albumIndex, 1);
-        return deletedAlbum;
-    }
-    }
+    albumDb.splice(index, 1);
+
+    return 'Deleted';
+  }
 }

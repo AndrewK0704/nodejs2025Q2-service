@@ -3,17 +3,17 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class UpdateTrackDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name?: string;
 
   @IsString()
   @IsNotEmpty()
-  artistId: string;
-  
+  artistId?: string | null;
+
   @IsString()
   @IsNotEmpty()
-  albumId: string;
+  albumId?: string;
 
   @IsNumber()
   @IsNotEmpty()
-  duration: number;
+  duration?: number;
 }

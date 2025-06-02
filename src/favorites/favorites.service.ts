@@ -31,18 +31,18 @@ export class FavoritesService {
     return db.favoritesDb;
   }
 
-  deleteArtistFavorites(id: string) {
-    const artist = db.favoritesDb.artists.find((item) => item.id === id);
+  // deleteArtistFavorites(id: string) {
+  //   const artist = db.favoritesDb.artists.find((item) => item.id === id);
 
-    if (!artist) {
-      throw new NotFoundException('Not found');
-    } else {
-      const artistIndex = db.favoritesDb.artists.findIndex(
-        (item) => item.id === id,
-      );
-      if (artistIndex === -1) return false;
-      db.favoritesDb.artists.splice(artistIndex, 1);
-      return true;
-    }
-  }
+  //   if (!artist) {
+  //     throw new NotFoundException('Not found');
+  //   } else {
+  //     const artistIndex = db.favoritesDb.artists.findIndex(
+  //       (item) => item.id === id,
+  //     );
+  //     if (artistIndex === -1) return false;
+  //     db.favoritesDb.artists.splice(artistIndex, 1);
+  //     return true;
+  //   }
+  // }
 }

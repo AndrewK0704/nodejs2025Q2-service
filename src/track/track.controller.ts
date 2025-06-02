@@ -18,13 +18,13 @@ export class TrackController {
   constructor(readonly trackService: TrackService) {}
 
   @Get()
-  // @HttpCode(200)
+  @HttpCode(200)
   getTracks() {
     return this.trackService.getTracks();
   }
 
   @Get(':id')
-  // @HttpCode(200)
+  @HttpCode(200)
   getTrackById(@Param('id', ParseUUIDPipe) id: string) {
     return this.trackService.getTrackById(id);
   }
@@ -41,7 +41,7 @@ export class TrackController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateTrackDto: UpdateTrackDto,
   ) {
-    return this.trackService.updateTrackById(id, updateTrackDto);
+    this.trackService.updateTrackById(id, updateTrackDto);
   }
 
   @Delete(':id')

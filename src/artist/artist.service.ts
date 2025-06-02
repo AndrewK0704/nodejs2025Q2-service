@@ -57,35 +57,30 @@ export class ArtistService {
     const index = artistDb.findIndex((item) => item.id === id);
     artistDb[index] = newArtist;
 
-    const returnArtistNew = JSON.parse(JSON.stringify(newArtist));
-    delete returnArtistNew.password;
-
-    return returnArtistNew;
   }
 
   deleteArtist(id: string) {
-    const index = artistDb.findIndex((item) => item.id === id);
-    let index2;
-
-    trackDb.forEach((track) => {
-      if (track.artistId == id) {
-        index2 = trackDb.findIndex((item) => item.id === id);
-        track.artistId = null;
-      }
-    });
-
-    if (index === -1) {
+  
+    const artist = artistDb.find((item) => item.id === id);
+    
+    if (!artist) {
       throw new NotFoundException('Not found');
+    } else {
+
+      albumDb.forEach((album) => {
+        if (album.artistId == id) {
+          album.artistId = null;
+        }
+      });
+
+      trackDb.forEach((track) => {
+        if (track.artistId == id) {
+            track.artistId = null;
+          }
+      });
+
+      const artistIndex = artistDb.findIndex((item) => item.id === id);
+      artistDb.splice(artistIndex, 1);
     }
-
-    albumDb.forEach((album) => {
-      if (album.artistId == id) {
-        album.artistId = null;
-      }
-    });
-
-    artistDb.splice(index, 1);
-
-    return artistDb[index], trackDb[index2];
   }
 }

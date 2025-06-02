@@ -58,27 +58,24 @@ export class AlbumService {
     const index = albumDb.findIndex((item) => item.id === id);
     albumDb[index] = newAlbum;
 
-    const returnAlbumNew = JSON.parse(JSON.stringify(newAlbum));
-    delete returnAlbumNew.password;
-
-    return returnAlbumNew;
   }
 
   deleteAlbum(id: string) {
-    const index = albumDb.findIndex((item) => item.id === id);
 
-    if (index === -1) {
+    const album = albumDb.find((item) => item.id === id);
+        
+    if (!album) {
       throw new NotFoundException('Not found');
+    } else {
+
+      trackDb.forEach((track) => {
+        if (track.albumId == id) {
+            track.albumId = null;
+        }
+      });
+
+      const albumIndex = albumDb.findIndex((item) => item.id === id);
+      albumDb.splice(albumIndex, 1);
     }
-
-    trackDb.forEach((track) => {
-      if (track.albumId === id) {
-        track.albumId = null;
-      }
-    });
-
-    albumDb.splice(index, 1);
-
-    return 'Deleted';
   }
 }

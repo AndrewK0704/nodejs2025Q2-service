@@ -41,7 +41,7 @@ export class ArtistController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateArtistDto: UpdateArtistDto,
   ) {
-    return this.artistService.updateArtistById(id, updateArtistDto);
+    this.artistService.updateArtistById(id, updateArtistDto);
   }
 
   @Delete(':id')

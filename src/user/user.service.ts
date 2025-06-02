@@ -74,10 +74,6 @@ export class UserService {
     const index = userDb.findIndex((item) => item.id === id);
     userDb[index] = newUser;
 
-    const returnUserNew = JSON.parse(JSON.stringify(newUser));
-    delete returnUserNew.password;
-
-    return returnUserNew;
   }
 
   deleteUser(id: string) {
@@ -87,9 +83,7 @@ export class UserService {
       throw new NotFoundException('Not found');
     } else {
       const userIndex = userDb.findIndex((item) => item.id === id);
-      if (userIndex === -1) return null;
-      const deletedUser = userDb.splice(userIndex, 1);
-      return deletedUser;
+      userDb.splice(userIndex, 1);
     }
   }
 }

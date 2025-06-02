@@ -18,9 +18,9 @@ export class FavoritesController {
     return this.favoritesService.getFavorites();
   }
 
-  @Delete('artist/:id')
-  @HttpCode(204)
-  deleteArtistFavorites(@Param('id', ParseUUIDPipe) id: string) {
-    this.favoritesService.deleteArtistFavorites(id);
-  }
+  // @Delete('artist/:id')
+  // @HttpCode(204)
+  // deleteArtistFavorites(@Param('id', ParseUUIDPipe) id: string) {
+  //   this.favoritesService.deleteArtistFavorites(id);
+  // }
 }

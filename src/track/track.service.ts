@@ -56,18 +56,18 @@ export class TrackService {
     const index = trackDb.findIndex((item) => item.id === id);
     trackDb[index] = newTrack;
 
-    return trackDb;
   }
 
   deleteTrack(id: string) {
-    const index = trackDb.findIndex((track) => track.id === id);
 
-    if (index === -1) {
+    const track = trackDb.find((item) => item.id === id);
+
+    if (!track) {
       throw new NotFoundException('Not found');
+    } else {
+      const trackIndex = trackDb.findIndex((item) => item.id === id);
+      trackDb.splice(trackIndex, 1);
     }
 
-    trackDb.splice(index, 1);
-
-    return 'Delete';
   }
 }

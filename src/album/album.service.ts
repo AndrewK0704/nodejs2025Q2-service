@@ -57,20 +57,17 @@ export class AlbumService {
 
     const index = albumDb.findIndex((item) => item.id === id);
     albumDb[index] = newAlbum;
-
   }
 
   deleteAlbum(id: string) {
-
     const album = albumDb.find((item) => item.id === id);
-        
+
     if (!album) {
       throw new NotFoundException('Not found');
     } else {
-
       trackDb.forEach((track) => {
         if (track.albumId == id) {
-            track.albumId = null;
+          track.albumId = null;
         }
       });
 

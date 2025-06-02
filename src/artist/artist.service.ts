@@ -56,17 +56,14 @@ export class ArtistService {
 
     const index = artistDb.findIndex((item) => item.id === id);
     artistDb[index] = newArtist;
-
   }
 
   deleteArtist(id: string) {
-  
     const artist = artistDb.find((item) => item.id === id);
-    
+
     if (!artist) {
       throw new NotFoundException('Not found');
     } else {
-
       albumDb.forEach((album) => {
         if (album.artistId == id) {
           album.artistId = null;
@@ -75,8 +72,8 @@ export class ArtistService {
 
       trackDb.forEach((track) => {
         if (track.artistId == id) {
-            track.artistId = null;
-          }
+          track.artistId = null;
+        }
       });
 
       const artistIndex = artistDb.findIndex((item) => item.id === id);

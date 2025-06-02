@@ -73,7 +73,6 @@ export class UserService {
 
     const index = userDb.findIndex((item) => item.id === id);
     userDb[index] = newUser;
-
   }
 
   deleteUser(id: string) {

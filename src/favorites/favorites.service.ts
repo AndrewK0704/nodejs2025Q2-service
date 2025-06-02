@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { Artist, artistDb } from '../artist/artist.service';
 import { Album, albumDb } from '../album/album.service';

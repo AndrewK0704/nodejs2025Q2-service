@@ -55,11 +55,9 @@ export class TrackService {
 
     const index = trackDb.findIndex((item) => item.id === id);
     trackDb[index] = newTrack;
-
   }
 
   deleteTrack(id: string) {
-
     const track = trackDb.find((item) => item.id === id);
 
     if (!track) {
@@ -68,6 +66,5 @@ export class TrackService {
       const trackIndex = trackDb.findIndex((item) => item.id === id);
       trackDb.splice(trackIndex, 1);
     }
-
   }
 }

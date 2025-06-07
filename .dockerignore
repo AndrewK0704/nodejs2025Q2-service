@@ -1,0 +1,9 @@
+.env
+.gitignore
+.git
+.vscode
+.eslint*
+.prettier*
+
+node_modules
+dist

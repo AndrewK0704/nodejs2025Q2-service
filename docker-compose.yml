@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  node:
+    image: node
+    container_name: node
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    env_file: 
+    - .env
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
+    command: npm run start
+    volumes:
+      - .:/app
+    networks:
+      - app_dev
+
+  postgres:
+    image: postgres
+    build:
+      context: ./db
+      dockerfile: ./Dockerfile
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_logs:/var/log/postgresql/postgresql.log
+    networks:
+      - app_dev
+
+volumes: 
+  postgres_logs:
+  postgres_data:
+
+networks:
+  app_dev:
+    driver: bridge

@@ -1,8 +1,8 @@
-import { 
+import {
   Injectable,
   UnprocessableEntityException,
-  NotFoundException
- } from '@nestjs/common';
+  NotFoundException,
+} from '@nestjs/common';
 
 import { Artist, artistDb } from '../artist/artist.service';
 import { Album, albumDb } from '../album/album.service';
@@ -14,8 +14,6 @@ export interface FavoritesResponse {
   albums: Album[];
   tracks: Track[];
 }
-
-
 
 export const favoritesDb = { artists: [], albums: [], tracks: [] };
 
@@ -29,11 +27,10 @@ export const db = {
 
 @Injectable()
 export class FavoritesService {
-  
   getFavorites() {
-    const artists=[];
-    const albums=[];
-    const tracks=[];
+    const artists = [];
+    const albums = [];
+    const tracks = [];
 
     db.favoritesDb.tracks.forEach((id) => {
       const track = db.trackDb.find((track) => track.id === id);
@@ -147,5 +144,4 @@ export class FavoritesService {
 
     return;
   }
-
 }

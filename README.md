@@ -45,6 +45,12 @@ npm run docker:test
 docker-compose down
 ```
 
+## Scanning application
+
+```
+docker-compose down
+```
+
 <!-- After application running open new terminal and enter:
 
 To run all tests without authorization

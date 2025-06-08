@@ -6,26 +6,32 @@ services:
     container_name: node
     build:
       context: .
-      dockerfile: ./Dockerfile
-    restart: always
+      dockerfile: Dockerfile
+    command: npm run start:dev
+    develop:
+      watch:
+        - action: rebuild
+          path: ./src
     env_file: 
     - .env
     ports:
       - ${PORT}:${PORT}
     depends_on:
       - postgres
-    command: npm run start
     volumes:
-      - .:/app
+      - ./src:/app/src
+      - /app/node_modules
     networks:
       - app_dev
+    environment:
+      - PORT=${PORT}
+    restart: always
 
   postgres:
     image: postgres
     build:
       context: ./db
-      dockerfile: ./Dockerfile
-    restart: always
+      dockerfile: Dockerfile
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -37,11 +43,12 @@ services:
       - postgres_logs:/var/log/postgresql/postgresql.log
     networks:
       - app_dev
-
-volumes: 
-  postgres_logs:
-  postgres_data:
+    restart: always
 
 networks:
   app_dev:
     driver: bridge
+
+volumes: 
+  postgres_logs:
+  postgres_data:

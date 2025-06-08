@@ -48,7 +48,7 @@ docker-compose down
 ## Scanning application
 
 ```
-docker-compose down
+npm run docker:scan
 ```
 
 <!-- After application running open new terminal and enter:
